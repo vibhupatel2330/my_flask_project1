@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Uploads</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f4;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        a {
+            text-decoration: none;
+            color: #007BFF;
+            margin-bottom: 20px;
+            display: inline-block;
+        }
+
+        .video-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .video-item {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin: 10px 0;
+            padding: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .video-item video {
+            display: block;
+            margin: 0 auto 10px;
+        }
+
+        .delete-form {
+            text-align: center;
+        }
+
+        .delete-button {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .delete-button:hover {
+            background-color: #c82333;
+        }
+    </style>
+</head>
+<body>
+    <h1>Welcome to Video Uploads</h1>
+    <a href="{{ url_for('upload_file') }}">Upload a Video</a>
+    <h2>Uploaded Videos:</h2>
+    <ul class="video-list">
+        {% for video in videos %}
+            <li class="video-item">
+                <video width="320" height="240" controls>
+                    <source src="{{ url_for('static', filename='uploads/' + video.filename) }}" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <p>{{ video.filename }}</p>
+                <form action="{{ url_for('delete_video', video_id=video.id) }}" method="post" class="delete-form">
+                    <button type="submit" class="delete-button">Delete</button>
+                </form>
+            </li>
+        {% else %}
+            <li>No videos uploaded yet.</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
